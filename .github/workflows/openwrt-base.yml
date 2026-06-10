@@ -39,6 +39,18 @@ jobs:
         cp ../config/xg-040g-md.config .config
         make defconfig
 
+    - name: Apply patches
+      run: |
+        cd patch
+        [ -e airoha/01_leds ] && cp -f airoha/01_leds ../openwrt/target/linux/airoha/an7581/base-files/etc/board.d/01_leds || true
+        [ -e airoha/02_network ] && cp -f airoha/02_network ../openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network || true
+        [ -f airoha/an7581-nokia_xg-040g-md.dts ] && cp -f airoha/an7581-nokia_xg-040g-md.dts ../openwrt/target/linux/airoha/an7581/dts/ || true
+        [ -f airoha/an7581.mk ] && cp -f airoha/an7581.mk ../openwrt/target/linux/airoha/an7581/ || true
+        # 应用内核补丁
+        [ -d airoha/patches-6.12 ] && cp -rf airoha/patches-6.12/* ../openwrt/target/linux/airoha/patches-6.12/ || true
+        [ -d generic/pending-6.12 ] && cp -rf generic/pending-6.12/* ../openwrt/target/linux/generic/pending-6.12/ || true
+        [ -d mediatek/patches-6.12 ] && cp -rf mediatek/patches-6.12/* ../openwrt/target/linux/mediatek/patches-6.12/ || true
+
     - name: Cache build dir
       uses: actions/cache@v4
       with:
