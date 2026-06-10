@@ -59,36 +59,29 @@ define Device/airoha_an7581-evb
 endef
 TARGET_DEVICES += airoha_an7581-evb
 
-define Device/airoha_an7581-evb-emmc
+define Device/airoha_an7581-evb-emmc-eagle
   DEVICE_VENDOR := Airoha
-  DEVICE_MODEL := AN7581 Evaluation Board (EMMC)
-  DEVICE_DTS := an7581-evb-emmc
-  DEVICE_PACKAGES := kmod-i2c-an7581
+  DEVICE_MODEL := AN7581 Evaluation Board (eMMC + Eagle)
+  DEVICE_DTS := an7581-evb-emmc-eagle
+  DEVICE_PACKAGES := kmod-i2c-an7581 airoha-en7581-mt7996-npu-firmware \
+		    kmod-mt7996-firmware wpad-basic-mbedtls
   ARTIFACT/preloader.bin := an7581-preloader rfb
   ARTIFACT/bl31-uboot.fip := an7581-bl31-uboot rfb
   ARTIFACTS := preloader.bin bl31-uboot.fip
 endef
-TARGET_DEVICES += airoha_an7581-evb-emmc
+TARGET_DEVICES += airoha_an7581-evb-emmc-eagle
 
-define Device/nokia_xg-040g-md
-  $(call Device/FitImageLzma)
-  DEVICE_VENDOR := Nokia
-  DEVICE_MODEL := Bell XG-040G-MD
-  DEVICE_DTS := an7581-nokia_xg-040g-md
-  SOC := an7581
-  KERNEL_LOADADDR := 0x80088000
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  KERNEL_SIZE := 8192k
-  IMAGE_SIZE := 261120k
-  KERNEL_IN_UBI := 1
-  UBINIZE_OPTS := -s 2048
-  IMAGES := factory.bin sysupgrade.bin
-  IMAGE/factory.bin := append-kernel | pad-to $$$$(KERNEL_SIZE) | append-ubi
-  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-  DEVICE_PACKAGES := kmod-phy-airoha-en8811h kmod-i2c-an7581 kmod-leds-gpio kmod-gpio-button-hotplug uboot-envtools ubi-utils kmod-usb2 kmod-usb3 kmod-usb-storage-uas
+define Device/airoha_an7581-evb-emmc-kite
+  DEVICE_VENDOR := Airoha
+  DEVICE_MODEL := AN7581 Evaluation Board (eMMC + Kite)
+  DEVICE_DTS := an7581-evb-emmc-kite
+  DEVICE_PACKAGES := kmod-i2c-an7581 airoha-en7581-npu-firmware \
+		    kmod-mt7992-firmware wpad-basic-mbedtls
+  ARTIFACT/preloader.bin := an7581-preloader rfb
+  ARTIFACT/bl31-uboot.fip := an7581-bl31-uboot rfb
+  ARTIFACTS := preloader.bin bl31-uboot.fip
 endef
-TARGET_DEVICES += nokia_xg-040g-md
+TARGET_DEVICES += airoha_an7581-evb-emmc-kite
 
 define Device/gemtek_w1700k-ubi
   DEVICE_VENDOR := Gemtek
@@ -138,3 +131,23 @@ define Device/nokia_valyrian
   ARTIFACTS := preloader.bin bl31-uboot.fip
 endef
 TARGET_DEVICES += nokia_valyrian
+
+define Device/nokia_xg-040g-md
+  $(call Device/FitImageLzma)
+  DEVICE_VENDOR := Nokia
+  DEVICE_MODEL := Bell XG-040G-MD
+  DEVICE_DTS := an7581-nokia_xg-040g-md
+  SOC := an7581
+  KERNEL_LOADADDR := 0x80088000
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_SIZE := 8192k
+  IMAGE_SIZE := 261120k
+  KERNEL_IN_UBI := 1
+  UBINIZE_OPTS := -s 2048
+  IMAGES := factory.bin sysupgrade.bin
+  IMAGE/factory.bin := append-kernel | pad-to $$$$(KERNEL_SIZE) | append-ubi
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h kmod-i2c-an7581 kmod-leds-gpio kmod-gpio-button-hotplug uboot-envtools ubi-utils kmod-usb2 kmod-usb3 kmod-usb-storage-uas
+endef
+TARGET_DEVICES += nokia_xg-040g-md
