@@ -6,7 +6,7 @@ on:
       packages:
         description: "Extra packages"
         required: false
-        default: "luci-ssl umdns kmod-mtd-rw"
+        default: "luci-ssl umdns kmod-mtd-rw kmod-usb-net-rndis kmod-usb-net-cdc-ether kmod-usb-net"
 
 jobs:
   image:
