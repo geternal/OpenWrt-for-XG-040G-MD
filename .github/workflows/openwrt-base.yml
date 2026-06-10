@@ -51,7 +51,8 @@ jobs:
     - name: Build OpenWrt (kernel + packages)
       run: |
         cd openwrt
-        make -j$(nproc)
+        # 首次并行构建，如果失败则重新用单线程模式获得详细错误
+        make -j$(nproc) V=s || make -j1 V=sc 2>&1 | tail -500
 
     - name: Upload ImageBuilder
       uses: actions/upload-artifact@v4
