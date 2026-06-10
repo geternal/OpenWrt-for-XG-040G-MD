@@ -46,7 +46,7 @@ jobs:
           openwrt/build_dir
           openwrt/staging_dir
           openwrt/.ccache
-        key: openwrt-${{ hashFiles('config/openwrt.config') }}
+        key: openwrt-${{ hashFiles('config/xg-040g-md.config') }}
 
     - name: Build OpenWrt (kernel + packages)
       run: |
